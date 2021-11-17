@@ -28,4 +28,6 @@ public abstract class Bullet extends Thing{
     public abstract void UpdateState();
     public abstract void Move();
 
+    public abstract void Refresh();
+
 }

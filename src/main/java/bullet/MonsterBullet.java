@@ -17,6 +17,12 @@ public class MonsterBullet extends Bullet {
         this.moveSign = sign;
     }
 
+    public void Refresh(){
+        UpdateState();
+        Move();
+        UpdateState();
+    }
+
     public void UpdateState() {
         if (!hasHit) {
             int x = getX();

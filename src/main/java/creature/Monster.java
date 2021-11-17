@@ -12,10 +12,14 @@ import bullet.MonsterBullet;
 
 public abstract class Monster extends Creature {
     
+    protected static final int refreshFreq=100;
+
     protected int attack;
     protected int HP;
     protected int maxHP;
     protected WorldScreen worldScreen;  //用于获取葫芦娃的位置等等
+
+    protected boolean beingHit=false;
 
     public Monster(Color color,char glyph, World world,WorldScreen worldScreen) {
         super(color, glyph, world);
@@ -26,20 +30,29 @@ public abstract class Monster extends Creature {
     @Override
     public void beHit(int attack){
         HP-=attack;
+        if (HP<0)
+            HP=0;
+        beingHit=true;
     }
 
-
+    public int getHP(){
+        return HP;
+    }
+    public int getMaxHP(){
+        return maxHP;
+    }
+    
     public synchronized void goUp(){
         int x=this.getX();
         int y=this.getY();
-        if (y>0 && (world.get(x, y-1) instanceof Floor)){
+        if (y>0 && (world.get(x, y-1) instanceof Floor) ||(world.get(x, y-1) instanceof Bullet) ){
             this.moveTo(x,y-1);
         }
     }
     public synchronized void goDown(){
         int x=this.getX();
         int y=this.getY();
-        if (y<World.HEIGHT-1 && (world.get(x, y+1) instanceof Floor)){
+        if (y<World.HEIGHT-1 && (world.get(x, y+1) instanceof Floor) ||(world.get(x, y+1) instanceof Bullet)){
             this.moveTo(x,y+1);
 
         }
@@ -47,7 +60,7 @@ public abstract class Monster extends Creature {
     public synchronized void goLeft(){
         int x=this.getX();
         int y=this.getY();
-        if (x>0 && (world.get(x-1, y) instanceof Floor)){
+        if (x>0 && (world.get(x-1, y) instanceof Floor) ||(world.get(x-1, y) instanceof Bullet)){
             this.moveTo(x-1,y);
 
         }
@@ -55,11 +68,12 @@ public abstract class Monster extends Creature {
     public synchronized void goRight(){
         int x=this.getX();
         int y=this.getY();
-        if (x<World.WIDTH-1 && (world.get(x+1, y) instanceof Floor)){
+        if (x<World.WIDTH-1 && (world.get(x+1, y) instanceof Floor) ||(world.get(x+1, y) instanceof Bullet)){
             this.moveTo(x+1,y);
 
         }
     }
+    
     public synchronized void attackUp(){
         int x=getX();
         int y=getY()-1;

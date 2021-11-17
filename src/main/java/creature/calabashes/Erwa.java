@@ -1,5 +1,49 @@
 package creature.calabashes;
 
-public class Erwa {
-    
+import java.util.ArrayList;
+
+import util.World;
+import java.awt.Color;
+import creature.Calabash;
+import screen.WorldScreen;
+import creature.Monster;
+
+public class Erwa extends Calabash {
+
+    private int skillAttack = 50;
+
+    public Erwa(World world, WorldScreen worldScreen) {
+        super(new Color(0, 255, 0), world, worldScreen);
+        attack = 20;
+        maxHP = 100;
+        HP = 100;
+        skillCD = 3 * 1000;
+        skillCDCount = skillCD;
+    }
+
+    public void skill() {
+        if (skillCDCount >= skillCD) {
+            skillCDCount = 0;
+            ArrayList<Monster> monsters = worldScreen.getMonsters();
+            int min = 0;
+            int minDis = 60 ^ 2 + 40 ^ 2;
+            if (!monsters.isEmpty())
+                for (int i = 0; i < monsters.size(); i++) {
+                    if (((monsters.get(i).getX() - getX()) ^ 2 + (monsters.get(i).getY() - getY()) ^ 2) < minDis) {
+                        min = i;
+                    }
+                }
+            monsters.get(min).beHit(skillAttack);
+        }
+    }
+
+    @Override
+    public void updateStates() {
+        if (skillCDCount < skillCD) {
+            skillCDCount += (nowTime - lastTime);
+        }
+        lastTime = nowTime;
+
+    }
+
 }

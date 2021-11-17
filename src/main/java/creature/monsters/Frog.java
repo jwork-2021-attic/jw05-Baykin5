@@ -8,25 +8,30 @@ import screen.WorldScreen;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-
 public class Frog extends Monster {
 
-    private int shootCnt;
+    private static int shootFreq=2;
+    private int shootCnt=0;
+    private static int actionFreq=5;
+    private int actionCnt=0;
+
+
+    
 
     public Frog(World world, WorldScreen worldScreen) {
-        super(new Color(255, 0, 0), (char) 1, world, worldScreen);
+        super(new Color(255, 165, 0), (char) 234, world, worldScreen);
         attack = 20;
-        HP = 200;
-        maxHP = 200;
-        shootCnt = 0;
+        maxHP=200;
+        HP = maxHP;
     }
 
     public void run() {
         try {
             while (HP > 0) {
-                TimeUnit.MILLISECONDS.sleep(1000);
+                TimeUnit.MILLISECONDS.sleep(refreshFreq);
                 UpdateState();
-                if (HP > 0) {
+                if (HP > 0 && actionCnt==actionFreq) {
+                    actionCnt=0;
                     RandomAttack();
                     RandomMove();
                 }
@@ -37,12 +42,21 @@ public class Frog extends Monster {
     }
 
     public void UpdateState() {
-        if ((float) (HP) / maxHP < 0.7) {
-            this.color = new Color(255, 165, 0);
+        if (beingHit) {
+            this.color=new Color(255,0,0);
+            beingHit=false;
+        } 
+        else {
+            if ((float) (HP) / maxHP < 0.7) {
+                this.color = new Color(255, 200, 0);
+            }
+            else if ((float) HP / maxHP < 0.3) {
+                this.color = new Color(255, 255, 0);
+            }
+            else             
+                this.color=new Color(255,165,0);
         }
-        if ((float) HP / maxHP < 0.3) {
-            this.color = new Color(255, 255, 0);
-        }
+        actionCnt++;
         if (HP <= 0)
             worldScreen.deleteMonster(this);
 
@@ -75,13 +89,15 @@ public class Frog extends Monster {
         }
     }
 
+
+
     public void RandomAttack() {
-        if (shootCnt == 2) { // shoot per 2 moving
+        if (shootCnt == shootFreq) { // shoot per 2 moving
             int Cx = worldScreen.getCalabashX();
             int Cy = worldScreen.getCalabashY();
             int x = getX();
             int y = getY();
-            if (Cx - x > Cy - y) {
+            if (Math.abs((Cx - x)) > Math.abs(Cy - y)) {
                 if (x < Cx) { // Calabash is on the right
                     attackRight();
                     attackRightUp();

@@ -20,6 +20,12 @@ public class CalabashBullet extends Bullet {
 
     }
 
+
+    public void Refresh(){
+        UpdateState();
+        Move();
+        UpdateState();
+    }
     public void UpdateState() {
         if (!hasHit) {
             int x = getX();

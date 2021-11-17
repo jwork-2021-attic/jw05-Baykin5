@@ -18,7 +18,7 @@ public class Main extends JFrame implements KeyListener {
 
     public Main() {
         super();
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT+10, AsciiFont.TALRYTH_15_15);
+        terminal = new AsciiPanel(World.WIDTH+10, World.HEIGHT+10, AsciiFont.TALRYTH_15_15);
         add(terminal);
         pack();
         screen = new StartScreen();
@@ -60,7 +60,7 @@ public class Main extends JFrame implements KeyListener {
         try{
             while(true){
                 //System.out.println("x");
-                TimeUnit.MILLISECONDS.sleep(200);
+                TimeUnit.MILLISECONDS.sleep(50);
                 screen.Refresh();
                 repaint();
             }

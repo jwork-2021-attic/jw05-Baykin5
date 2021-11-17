@@ -2,6 +2,7 @@ package creature;
 
 import java.awt.Color;
 
+
 import util.Thing;
 import util.World;
 import util.Floor;
@@ -24,8 +25,16 @@ public abstract class Creature extends Thing implements Runnable{
 
     public abstract void run();
 
-    public abstract void goUp();
-    public abstract void goDown();
-    public abstract void goLeft();
-    public abstract void goRight();
+    public synchronized void goUp(){
+
+    }
+    public synchronized void goDown(){
+
+    }
+    public synchronized void goLeft(){
+
+    }
+    public synchronized void goRight(){
+        
+    }
 }

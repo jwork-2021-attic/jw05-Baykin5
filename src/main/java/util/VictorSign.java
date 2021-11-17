@@ -1,9 +1,9 @@
 package util;
 
-import asciiPanel.AsciiPanel;
+import java.awt.Color;
 
 public class VictorSign extends Thing {
     public VictorSign(World world) {
-        super(AsciiPanel.blue, (char) 15, world);
+        super(new Color(0,255,0), (char) 15, world);
     }
 }

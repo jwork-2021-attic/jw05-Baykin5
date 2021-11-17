@@ -7,8 +7,8 @@ public class StartScreen implements Screen {
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("Calabash Adventure", 17, 10);
-        terminal.write("Press Enter to continue", 15, 30);
+        terminal.write("Calabash Adventure", 23, 10);
+        terminal.write("Press Enter to continue", 22, 30);
     }
 
     @Override
