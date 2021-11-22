@@ -8,23 +8,22 @@ import screen.WorldScreen;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Frog extends Monster {
-
+public class Bat extends Monster {
     private static int shootFreq=2;
     private int shootCnt=0;
     private static int actionFreq=5;
     private int actionCnt=0;
 
-    static private int bulletFreq=5;
+    static private int bulletFreq=2;
 
-    
 
-    public Frog(World world, WorldScreen worldScreen) {
-        super(new Color(255, 165, 0), (char) 233, world, worldScreen);
+
+    public Bat(World world, WorldScreen worldScreen) {
+        super(new Color(255, 165, 0), (char) 234, world, worldScreen);
         attack = 20;
-        maxHP=200;
+        maxHP=100;
         HP = maxHP;
-        int t=new Random().nextInt(2);
+        int t=new Random().nextInt(3);
         if (t==0)
             hasHeart=true;
     }
@@ -41,7 +40,7 @@ public class Frog extends Monster {
                 }
             }
         } catch (InterruptedException e) {
-            System.out.println("Frog thread ERROR");
+            System.out.println("Bat thread ERROR");
         } finally{
             worldScreen.deleteMonster(this);
             if (hasHeart){
@@ -108,29 +107,21 @@ public class Frog extends Monster {
             if (Math.abs((Cx - x)) > Math.abs(Cy - y)) {
                 if (x < Cx) { // Calabash is on the right
                     attackRight(bulletFreq);
-                    attackRightUp(bulletFreq);
-                    attackRightDown(bulletFreq);
                 } else if (x > Cx) {
                     attackLeft(bulletFreq);
-                    attackLeftUp(bulletFreq);
-                    attackLeftDown(bulletFreq);
                 }
 
             } else {
                 if (y < Cy) {// Calabash is on the down
                     attackDown(bulletFreq);
-                    attackLeftDown(bulletFreq);
-                    attackRightDown(bulletFreq);
 
                 } else if (y > Cy) {
                     attackUp(bulletFreq);
-                    attackRightUp(bulletFreq);
-                    attackLeftUp(bulletFreq);
                 }
             }
-
             shootCnt = 0;
         } else
             shootCnt++;
     }
 }
+

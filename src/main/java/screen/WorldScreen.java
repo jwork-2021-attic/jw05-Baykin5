@@ -13,6 +13,7 @@ import creature.monsters.*;
 import level.LevelController;
 import util.Wall;
 import util.Floor;
+import util.Heart;
 import bullet.Bullet;
 import bullet.CalabashBullet;
 import util.VictorSign;
@@ -25,7 +26,6 @@ public class WorldScreen implements Screen {
 
     static final int MapTypeNum = 3;
     static final int TotalLevelNum = 3;
-    static final int CalabashBulletSpeed = 5;
 
     private World world;
     int[][] raws;
@@ -45,7 +45,6 @@ public class WorldScreen implements Screen {
     private int MapHeight;
     private int MapWidth;
 
-    private int BulletRefreshCnt = 0;
 
     private boolean BossSign = false;
     private boolean defeatBossSign=false;
@@ -174,6 +173,13 @@ public class WorldScreen implements Screen {
         world.put(s, x, y);
     }
 
+    public void addHeart(int x,int y){
+        Heart h=new Heart(world);
+        if (!(world.get(x, y) instanceof Creature) && !(world.get(x, y) instanceof Wall)) {
+            world.put(h, x, y);
+        }
+
+    }
     public boolean addMonster(int type, int x, int y) {
         Monster m;
         switch (type) {
@@ -181,10 +187,16 @@ public class WorldScreen implements Screen {
             m = new Frog(world, this);
             break;
         }
+        case 1:{
+            m=new Bat(world, this);
+            break;
+        }
         default:
             m = new Frog(world, this);
         }
-        if (!(world.get(x, y) instanceof Creature) && !(world.get(x, y) instanceof Wall)) {
+        if (!(world.get(x, y) instanceof Creature) && 
+            !(world.get(x, y) instanceof Wall) && 
+            !(world.get(x, y) instanceof Heart)){
             world.put(m, x, y);
             monsters.add(m);
             gameThread.addMonsterThread(m);
@@ -340,20 +352,12 @@ public class WorldScreen implements Screen {
     }
 
     public void Refresh() {
-
-        BulletRefreshCnt++;
-        if (BulletRefreshCnt == CalabashBulletSpeed) {
-            for (Bullet b : monsterBullets) {
-                b.Refresh();
-            }
-            BulletRefreshCnt = 0;
+        for (Bullet b : monsterBullets) {
+            b.Refresh();
         }
         for (Bullet b : calabashBullets) {
             b.Refresh();
         }
-
-
-
         for (Bullet b : deleteCalabashBullets) {
             calabashBullets.remove(b);
         }
@@ -363,5 +367,4 @@ public class WorldScreen implements Screen {
         }
         deleteMonsterBullets.clear();
     }
-
 }

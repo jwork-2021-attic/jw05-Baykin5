@@ -14,6 +14,7 @@ public class Snake extends Monster {
     private int shootCnt = 0;
     private static int actionFreq = 5;
     private int actionCnt = 0;
+    static private int bulletFreq=5;
 
 
 
@@ -90,16 +91,16 @@ public class Snake extends Monster {
     public void Attack() {
         if (shootCnt == shootFreq) { // shoot per 2 moving
 
-            attackRight();
-            attackRightDown();
+            attackRight(bulletFreq);
+            attackRightDown(bulletFreq);
 
-            attackLeft();
-            attackLeftUp();
-            attackLeftDown();
+            attackLeft(bulletFreq);
+            attackLeftUp(bulletFreq);
+            attackLeftDown(bulletFreq);
 
-            attackDown();
-            attackUp();
-            attackRightUp();
+            attackDown(bulletFreq);
+            attackUp(bulletFreq);
+            attackRightUp(bulletFreq);
 
             shootCnt = 0;
         } else

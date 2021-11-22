@@ -11,15 +11,30 @@ import util.Wall;
 
 public class MonsterBullet extends Bullet {
 
+    protected int refreshFreq=5;
+    protected int refreshCnt=0;
+
+
     public MonsterBullet(World world, WorldScreen worldScreen, int attack, int sign) {
         super(new Color(255, 0, 0), (char) 7, world, worldScreen); // red
         this.attack = attack;
         this.moveSign = sign;
     }
 
+    public MonsterBullet(World world, WorldScreen worldScreen, int attack, int sign,int speed) {
+        super(new Color(255, 0, 0), (char) 7, world, worldScreen); // red
+        this.attack = attack;
+        this.moveSign = sign;
+        refreshFreq=speed;
+    }
+
     public void Refresh(){
+        refreshCnt++;
         UpdateState();
-        Move();
+        if (refreshCnt==refreshFreq){
+            Move();
+            refreshCnt=0;
+        }
         UpdateState();
     }
 

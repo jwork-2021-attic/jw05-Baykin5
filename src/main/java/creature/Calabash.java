@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import util.World;
 import util.Wall;
 import util.Floor;
+import util.Heart;
 import util.VictorSign;
 import bullet.Bullet;
 import bullet.CalabashBullet;
@@ -54,7 +55,10 @@ public abstract class Calabash extends Creature {
         if (world.get(x, y - 1) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (y > 0 && (world.get(x, y - 1) instanceof Floor) || (world.get(x, y - 1) instanceof Bullet)) {
+        if (y > 0 && (world.get(x, y - 1) instanceof Heart)) {
+            heal(20);
+            this.moveTo(x, y - 1);
+        } else if (y > 0 && (world.get(x, y - 1) instanceof Floor) || (world.get(x, y - 1) instanceof Bullet)) {
             this.moveTo(x, y - 1);
         }
 
@@ -66,7 +70,11 @@ public abstract class Calabash extends Creature {
         if (world.get(x, y + 1) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (y < World.HEIGHT - 1 && (world.get(x, y + 1) instanceof Floor) || (world.get(x, y + 1) instanceof Bullet)) {
+        if (y < World.HEIGHT - 1 && (world.get(x, y + 1) instanceof Heart)) {
+            heal(20);
+            this.moveTo(x, y + 1);
+        } else if (y < World.HEIGHT - 1 && (world.get(x, y + 1) instanceof Floor)
+                || (world.get(x, y + 1) instanceof Bullet)) {
             this.moveTo(x, y + 1);
 
         }
@@ -78,7 +86,10 @@ public abstract class Calabash extends Creature {
         if (world.get(x - 1, y) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (x > 0 && (world.get(x - 1, y) instanceof Floor) || (world.get(x - 1, y) instanceof Bullet)) {
+        if (x > 0 && (world.get(x - 1, y) instanceof Heart)) {
+            heal(20);
+            this.moveTo(x - 1, y);
+        } else if (x > 0 && (world.get(x - 1, y) instanceof Floor) || (world.get(x - 1, y) instanceof Bullet)) {
             this.moveTo(x - 1, y);
         }
     }
@@ -88,6 +99,10 @@ public abstract class Calabash extends Creature {
         int y = this.getY();
         if (world.get(x + 1, y) instanceof VictorSign) {
             worldScreen.PassLevel();
+        }
+        if (x < World.WIDTH - 1 && (world.get(x + 1, y) instanceof Heart)) {
+            heal(20);
+            this.moveTo(x + 1, y);
         }
         if (x < World.WIDTH - 1 && (world.get(x + 1, y) instanceof Floor) || (world.get(x + 1, y) instanceof Bullet)) {
             this.moveTo(x + 1, y);
@@ -185,8 +200,8 @@ public abstract class Calabash extends Creature {
     }
 
     public void updateShootState() {
-        nowTime=System.currentTimeMillis();
-        shootCnt+=nowTime-lastTime;
+        nowTime = System.currentTimeMillis();
+        shootCnt += nowTime - lastTime;
     }
 
     public int getAttack() {

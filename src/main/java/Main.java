@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import util.World;
 import screen.Screen;
 import screen.StartScreen;
+import threadController.RefreshRunnable;
 
 import asciiPanel.AsciiFont;
 import asciiPanel.AsciiPanel;
@@ -29,6 +30,7 @@ public class Main extends JFrame implements KeyListener {
     @Override
     public void repaint() {
         terminal.clear();
+        screen.Refresh();
         screen.displayOutput(terminal);
         super.repaint();
     }
@@ -53,9 +55,11 @@ public class Main extends JFrame implements KeyListener {
         Main app = new Main();
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
-        app.start();
+        new Thread(new RefreshRunnable(app)).start();
+        //app.start();
     }
 
+    /*
     void start(){
         try{
             while(true){
@@ -69,4 +73,5 @@ public class Main extends JFrame implements KeyListener {
             System.out.println("Main Error");
         }
     }
+    */
 }
