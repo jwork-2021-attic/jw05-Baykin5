@@ -1,5 +1,8 @@
 package creature.calabashes;
 
+import util.Heart;
+import util.Sword;
+import util.Thing;
 import util.World;
 import java.awt.Color;
 import creature.Calabash;
@@ -12,10 +15,10 @@ public class Dawa extends Calabash{
     private int buffedCount=0;
 
     public Dawa(World world,WorldScreen worldScreen){
-        super(new Color(0, 255, 0),world,worldScreen);
+        super(world,worldScreen);
         attack=20;
         maxHP=100;
-        HP=100;
+        HP=maxHP;
         skillCD=20*1000;
         skillCDCount=skillCD;
         buffed=false;

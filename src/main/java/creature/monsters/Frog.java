@@ -20,7 +20,7 @@ public class Frog extends Monster {
     
 
     public Frog(World world, WorldScreen worldScreen) {
-        super(new Color(255, 165, 0), (char) 233, world, worldScreen);
+        super((char) 233, world, worldScreen);
         attack = 20;
         maxHP=200;
         HP = maxHP;
@@ -52,22 +52,7 @@ public class Frog extends Monster {
     }
 
     public void UpdateState() {
-        if (beingHit) {
-            this.color=new Color(255,0,0);
-            beingHit=false;
-        } 
-        else {
-            if ((float) (HP) / maxHP < 0.7) {
-                this.color = new Color(255, 200, 0);
-            }
-            else if ((float) HP / maxHP < 0.3) {
-                this.color = new Color(255, 255, 0);
-            }
-            else             
-                this.color=new Color(255,165,0);
-        }
         actionCnt++;
-
     }
 
     public void RandomMove() {
@@ -108,24 +93,24 @@ public class Frog extends Monster {
             if (Math.abs((Cx - x)) > Math.abs(Cy - y)) {
                 if (x < Cx) { // Calabash is on the right
                     attackRight(bulletFreq);
-                    attackRightUp(bulletFreq);
-                    attackRightDown(bulletFreq);
+                    //attackRightUp(bulletFreq);
+                    //attackRightDown(bulletFreq);
                 } else if (x > Cx) {
                     attackLeft(bulletFreq);
-                    attackLeftUp(bulletFreq);
-                    attackLeftDown(bulletFreq);
+                    //attackLeftUp(bulletFreq);
+                    //attackLeftDown(bulletFreq);
                 }
 
             } else {
                 if (y < Cy) {// Calabash is on the down
                     attackDown(bulletFreq);
-                    attackLeftDown(bulletFreq);
-                    attackRightDown(bulletFreq);
+                    //attackLeftDown(bulletFreq);
+                    //attackRightDown(bulletFreq);
 
                 } else if (y > Cy) {
                     attackUp(bulletFreq);
-                    attackRightUp(bulletFreq);
-                    attackLeftUp(bulletFreq);
+                    //attackRightUp(bulletFreq);
+                    //attackLeftUp(bulletFreq);
                 }
             }
 

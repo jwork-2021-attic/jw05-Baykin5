@@ -16,8 +16,8 @@ public abstract class Bullet extends Thing{
 
     static final int direction[][]={{0,-1},{0,1},{-1,0},{1,0},{-1,-1},{1,-1},{1,1},{-1,1}}; 
 
-    public Bullet(Color color, char glyph, World world,WorldScreen worldscreen){
-        super(color, glyph, world);
+    public Bullet( char glyph, World world,WorldScreen worldscreen){
+        super(glyph, world);
         this.worldScreen=worldscreen;
         hasHit=false;
     }

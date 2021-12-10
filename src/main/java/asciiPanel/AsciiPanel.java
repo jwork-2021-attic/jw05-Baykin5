@@ -117,8 +117,6 @@ public class AsciiPanel extends JPanel {
     private Color[][] backgroundColors;
     private Color[][] foregroundColors;
     private char[][] oldChars;
-    private Color[][] oldBackgroundColors;
-    private Color[][] oldForegroundColors;
     private AsciiFont asciiFont;
 
     /**
@@ -341,11 +339,6 @@ public class AsciiPanel extends JPanel {
         defaultForegroundColor = white;
 
         chars = new char[widthInCharacters][heightInCharacters];
-        backgroundColors = new Color[widthInCharacters][heightInCharacters];
-        foregroundColors = new Color[widthInCharacters][heightInCharacters];
-
-        oldBackgroundColors = new Color[widthInCharacters][heightInCharacters];
-        oldForegroundColors = new Color[widthInCharacters][heightInCharacters];
 
         if (font == null) {
             font = AsciiFont.CP437_9x16;
@@ -365,19 +358,13 @@ public class AsciiPanel extends JPanel {
 
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
-                if (oldBackgroundColors[x][y] == backgroundColors[x][y]
-                        && oldForegroundColors[x][y] == foregroundColors[x][y] && oldChars[x][y] == chars[x][y])
+                if (oldChars[x][y] == chars[x][y])
                     continue;
 
-                Color bg = backgroundColors[x][y];
-                Color fg = foregroundColors[x][y];
 
-                LookupOp op = setColors(bg, fg);
-                BufferedImage img = op.filter(glyphs[chars[x][y]], null);
+                BufferedImage img=glyphs[chars[x][y]];
                 offscreenGraphics.drawImage(img, x * charWidth, y * charHeight, null);
 
-                oldBackgroundColors[x][y] = backgroundColors[x][y];
-                oldForegroundColors[x][y] = foregroundColors[x][y];
                 oldChars[x][y] = chars[x][y];
             }
         }
@@ -410,39 +397,7 @@ public class AsciiPanel extends JPanel {
      * @param fgColor the foreground color
      * @return the <code>LookupOp</code> object (lookup table)
      */
-    private LookupOp setColors(Color bgColor, Color fgColor) {
-        short[] a = new short[256];
-        short[] r = new short[256];
-        short[] g = new short[256];
-        short[] b = new short[256];
 
-        byte bga = (byte) (bgColor.getAlpha());
-        byte bgr = (byte) (bgColor.getRed());
-        byte bgg = (byte) (bgColor.getGreen());
-        byte bgb = (byte) (bgColor.getBlue());
-
-        byte fga = (byte) (fgColor.getAlpha());
-        byte fgr = (byte) (fgColor.getRed());
-        byte fgg = (byte) (fgColor.getGreen());
-        byte fgb = (byte) (fgColor.getBlue());
-
-        for (int i = 0; i < 256; i++) {
-            if (i == 0) {
-                a[i] = bga;
-                r[i] = bgr;
-                g[i] = bgg;
-                b[i] = bgb;
-            } else {
-                a[i] = fga;
-                r[i] = fgr;
-                g[i] = fgg;
-                b[i] = fgb;
-            }
-        }
-
-        short[][] table = { r, g, b, a };
-        return new LookupOp(new ShortLookupTable(0, table), null);
-    }
 
     /**
      * Clear the entire screen to whatever the default background color is.
@@ -704,8 +659,6 @@ public class AsciiPanel extends JPanel {
             background = defaultBackgroundColor;
 
         chars[x][y] = character;
-        foregroundColors[x][y] = foreground;
-        backgroundColors[x][y] = background;
         cursorX = x + 1;
         cursorY = y;
         return this;

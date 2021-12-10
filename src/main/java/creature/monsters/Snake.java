@@ -19,7 +19,7 @@ public class Snake extends Monster {
 
 
     public Snake(World world, WorldScreen worldScreen) {
-        super(new Color(255, 165, 0), (char) 1, world, worldScreen);
+        super( (char) 224, world, worldScreen);
         attack = 20;
         maxHP=2000;
         HP = maxHP;
@@ -42,17 +42,6 @@ public class Snake extends Monster {
     }
 
     public void UpdateState() {
-        if (beingHit) {
-            this.color = new Color(255, 0, 0);
-            beingHit = false;
-        } else {
-            if ((float) (HP) / maxHP < 0.7) {
-                this.color = new Color(255, 200, 0);
-            } else if ((float) HP / maxHP < 0.3) {
-                this.color = new Color(255, 255, 0);
-            } else
-                this.color = new Color(255, 165, 0);
-        }
         actionCnt++;
         if (HP <= 0)
         {

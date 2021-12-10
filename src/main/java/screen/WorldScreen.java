@@ -1,9 +1,12 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+import gamedata.Data;
 import creature.Creature;
 import creature.Calabash;
 import util.World;
@@ -12,8 +15,10 @@ import creature.Monster;
 import creature.monsters.*;
 import level.LevelController;
 import util.Wall;
+import util.Barrier;
 import util.Floor;
 import util.Heart;
+import util.Jar;
 import bullet.Bullet;
 import bullet.CalabashBullet;
 import util.VictorSign;
@@ -29,6 +34,7 @@ public class WorldScreen implements Screen {
 
     private World world;
     int[][] raws;
+    int calabashType;
     Calabash calabash;
     ArrayList<Monster> monsters;
     ArrayList<Bullet> calabashBullets;
@@ -49,9 +55,10 @@ public class WorldScreen implements Screen {
     private boolean BossSign = false;
     private boolean defeatBossSign=false;
 
-    public WorldScreen(int calabashType) {
+    public WorldScreen(int calabashType) throws IOException {
         world = new World();
         level = 0;
+        this.calabashType=calabashType;
         switch (calabashType) {
         case 1: {
             calabash = new Dawa(world, this);
@@ -81,16 +88,21 @@ public class WorldScreen implements Screen {
         MapGenerator mapGenerator = new MapGenerator();
         int t = new Random().nextInt(MapTypeNum);
         mapGenerator.GenarateMap(t);
-        CreateMap(mapGenerator);
+        raws=mapGenerator.getMap();
+        CreateMap(raws);
 
         world.put(calabash, 1, 20);
         levelController = new LevelController(this,BossSign);
         gameThread = new GameThread(this);
         gameThread.start();
 
+        Data data=new Data();
+        data.set(level,calabashType, calabash.getHP(), calabash.getMaxHP(), calabash.getAttack(),raws);
+        data.save("SaveData.txt");
+
     }
 
-    public WorldScreen(int level, Calabash calabash) {
+    public WorldScreen(int level, Calabash calabash) throws IOException {
         world = new World();
         this.level = level;
         this.calabash = calabash;
@@ -103,14 +115,14 @@ public class WorldScreen implements Screen {
         if (level == 2) {
             BossSign = true;
             maptype=4;
-
         }
         else
             maptype = new Random().nextInt(MapTypeNum);
 
         MapGenerator mapGenerator = new MapGenerator();
         mapGenerator.GenarateMap(maptype);
-        CreateMap(mapGenerator);
+        raws=mapGenerator.getMap();
+        CreateMap(raws);
 
         calabash.setWorld(world, this);
         world.put(this.calabash, 1, 20);
@@ -118,18 +130,78 @@ public class WorldScreen implements Screen {
         gameThread = new GameThread(this);
         gameThread.start();
 
+
+        Data data=new Data();
+        data.set(level,calabashType, calabash.getHP(), calabash.getMaxHP(), calabash.getAttack(),raws);
+        data.save("SaveData.txt");
+
     }
 
-    public void CreateMap(MapGenerator mapGenerator) {
-        MapHeight = mapGenerator.getHeight();
-        MapWidth = mapGenerator.getWidth();
-        raws = mapGenerator.getMap();
+    public WorldScreen(Data data){
+        data.print();
+        world=new World();
+        this.level=data.getLevel();
+        if (level==2)
+            BossSign=true;
+        calabashType=data.getCalabashType();
+        switch (calabashType) {
+            case 1: {
+                calabash = new Dawa(world, this);
+                break;
+            }
+            case 2: {
+                calabash = new Erwa(world, this);
+                break;
+            }
+            case 3: {
+                calabash = new Sanwa(world, this);
+                break;
+            }
+            default:
+                calabash = new Dawa(world, this);
+            }
+        calabash.setHP(data.getHP());
+        calabash.setMaxHP(data.getMaxHP());
+        calabash.setAttack(data.getAttack());
+        raws=data.getraws();
+        CreateMap(raws);
+
+        monsters = new ArrayList<Monster>();
+        calabashBullets = new ArrayList<Bullet>();
+        monsterBullets = new ArrayList<Bullet>();
+        deleteCalabashBullets = new ArrayList<Bullet>();
+        deleteMonsterBullets = new ArrayList<Bullet>();
+
+        calabash.setWorld(world, this);
+        world.put(this.calabash, 1, 20);
+        levelController = new LevelController(this,BossSign);
+        gameThread = new GameThread(this);
+        gameThread.start();
+
+
+    }
+
+
+
+
+    public void CreateMap(int raws[][]) {
+        MapHeight = World.HEIGHT;
+        MapWidth = World.WIDTH;
         for (int i = 0; i < MapHeight; i++)
             for (int j = 0; j < MapWidth; j++) {
-                if (raws[i][j] == 1) {
-                    world.put(new Floor(world), j, i);
-                } else {
-                    world.put(new Wall(world), j, i);
+                switch(raws[i][j]){
+                    case 1: //Floor
+                        world.put(new Floor(world),j,i);
+                    break;
+                    case 2://Barrier
+                        world.put(new Barrier(world),j,i);
+                    break;
+                    case 3://Jar
+                        world.put(new Jar(world),j,i);
+                    break;
+                    default:
+                        world.put(new Wall(world), j, i);
+                    break;
                 }
             }
     }
@@ -244,6 +316,7 @@ public class WorldScreen implements Screen {
 
     }
 
+
     public void PassLevel() {
         winSign = true;
     }
@@ -254,7 +327,7 @@ public class WorldScreen implements Screen {
         for (int x = 0; x < World.WIDTH; x++) {
             for (int y = 0; y < World.HEIGHT; y++) {
 
-                terminal.write(world.get(x, y).getGlyph(), x, y, world.get(x, y).getColor());
+                terminal.write(world.get(x, y).getGlyph(), x, y);
 
             }
         }
@@ -262,21 +335,24 @@ public class WorldScreen implements Screen {
     }
 
     void UIupdate(AsciiPanel terminal) {
-        terminal.write("HP: " + calabash.getHP() + "/" + calabash.getMaxHP(), 0, World.HEIGHT + 1);
-        terminal.write("Attack: " + calabash.getAttack(), 0, World.HEIGHT + 2);
-        terminal.write("Skill: " + calabash.getSkillCD() + "%", 0, World.HEIGHT + 3);
+        terminal.write("HP: " + calabash.getHP() + "/" + calabash.getMaxHP(), 36, 0);
+        terminal.write("Attack: " + calabash.getAttack(), 36, 1);
+        terminal.write("Skill: " + calabash.getSkillCD() + "%", 36, 2);
+
+
+        terminal.write("LEVEL: "+level,36,25);
 
         if (BossSign && !monsters.isEmpty()){   //display BOSS HP
-            terminal.write("BOSS:",0,World.HEIGHT+5);
+            terminal.write("BOSS:",0,27);
             Monster m=monsters.get(0);
-            for (int i=0;i<m.getHP()*50/m.getMaxHP();i++)
-                terminal.write((char)178,8+i,World.HEIGHT+5,AsciiPanel.white);
+            for (int i=0;i<m.getHP()*35/m.getMaxHP();i++)
+                terminal.write((char)177,8+i,27,AsciiPanel.white);
         }
 
     }
 
     @Override
-    public Screen respondToUserInput(KeyEvent key) {
+    public Screen respondToUserInput(KeyEvent key) throws IOException {
         if (winSign) {
             if (level == TotalLevelNum - 1) {
                 winSign = false;

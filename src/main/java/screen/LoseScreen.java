@@ -6,8 +6,8 @@ import java.awt.event.KeyEvent;
 public class LoseScreen implements Screen {
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("You Died...", 27,5 );
-        terminal.write("Press Enter to Restart.", 23, 10);
+        terminal.write("You Died...", 10,5 );
+        terminal.write("Press Enter to Restart.", 2, 10);
     }
 
     @Override

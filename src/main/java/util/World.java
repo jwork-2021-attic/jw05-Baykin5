@@ -3,8 +3,8 @@ package util;
 
 public class World {
 
-    public static final int WIDTH = 60;
-    public static final int HEIGHT = 40;
+    public static final int WIDTH = 35;
+    public static final int HEIGHT = 25;
 
     private Tile<Thing>[][] tiles;
 
@@ -22,6 +22,10 @@ public class World {
         }
     }
 
+    public Thing getItem(int x,int y){
+        return this.tiles[x][y].getItem();
+    }
+
     public Thing get(int x, int y) {
         return this.tiles[x][y].getThing();
     }
@@ -36,6 +40,9 @@ public class World {
     }
     public void deleteMonster(Thing monster,int x,int y){
         this.tiles[x][y].setThing(new Floor(this));
+    }
+    public void deleteItem(int x,int y){
+        this.tiles[x][y].deleteItem();
     }
 
 }

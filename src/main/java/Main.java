@@ -1,5 +1,6 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
@@ -19,7 +20,7 @@ public class Main extends JFrame implements KeyListener {
 
     public Main() {
         super();
-        terminal = new AsciiPanel(World.WIDTH+10, World.HEIGHT+10, AsciiFont.TALRYTH_15_15);
+        terminal = new AsciiPanel(50,28, AsciiFont.Baykin_30_30);
         add(terminal);
         pack();
         screen = new StartScreen();
@@ -41,8 +42,12 @@ public class Main extends JFrame implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {  //一个问题 只有在按下按键的时候 才会刷新屏幕
-        screen = screen.respondToUserInput(e);
+    public void keyPressed(KeyEvent e) {  
+        try {
+            screen = screen.respondToUserInput(e);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         repaint();
     }
 

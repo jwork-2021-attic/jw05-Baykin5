@@ -30,7 +30,7 @@ public class LevelController implements Runnable { // 控制关卡运行
         TotalMonsterNum = TotalMonsterNums[level];
         NormalMonsterTypeNum = NormalMonsterTypeNums[level];
         HasCreateNum = 0;
-        MaxMonsterNum = 4;
+        MaxMonsterNum = 1;
         this.bossSign=bossSign;
     }
 

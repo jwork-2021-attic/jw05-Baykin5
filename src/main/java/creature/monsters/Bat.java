@@ -19,7 +19,7 @@ public class Bat extends Monster {
 
 
     public Bat(World world, WorldScreen worldScreen) {
-        super(new Color(255, 165, 0), (char) 234, world, worldScreen);
+        super( (char) 234, world, worldScreen);
         attack = 20;
         maxHP=100;
         HP = maxHP;
@@ -51,20 +51,7 @@ public class Bat extends Monster {
     }
 
     public void UpdateState() {
-        if (beingHit) {
-            this.color=new Color(255,0,0);
-            beingHit=false;
-        } 
-        else {
-            if ((float) (HP) / maxHP < 0.7) {
-                this.color = new Color(255, 200, 0);
-            }
-            else if ((float) HP / maxHP < 0.3) {
-                this.color = new Color(255, 255, 0);
-            }
-            else             
-                this.color=new Color(255,165,0);
-        }
+        
         actionCnt++;
 
     }

@@ -3,6 +3,10 @@ package creature;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
+import util.Sword;
+import util.HeartCrystal;
+import util.Thing;
+import util.Item;
 import util.World;
 import util.Wall;
 import util.Floor;
@@ -27,8 +31,8 @@ public abstract class Calabash extends Creature {
     protected int shootCnt;
     protected int shootFreq = (int) (0.25 * 1000); // can shoot 1 per 500ms
 
-    public Calabash(Color color, World world, WorldScreen worldScreen) {
-        super(color, (char) 2, world);
+    public Calabash( World world, WorldScreen worldScreen) {
+        super( (char) 2, world);
         this.worldScreen = worldScreen;
         lastTime = System.currentTimeMillis();
         shootCnt = shootFreq;
@@ -55,10 +59,8 @@ public abstract class Calabash extends Creature {
         if (world.get(x, y - 1) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (y > 0 && (world.get(x, y - 1) instanceof Heart)) {
-            heal(20);
-            this.moveTo(x, y - 1);
-        } else if (y > 0 && (world.get(x, y - 1) instanceof Floor) || (world.get(x, y - 1) instanceof Bullet)) {
+        Thing t=world.get(x,y-1);
+        if (y > 0 && (t instanceof Floor) || t instanceof Item || (t instanceof Bullet)) {
             this.moveTo(x, y - 1);
         }
 
@@ -70,11 +72,8 @@ public abstract class Calabash extends Creature {
         if (world.get(x, y + 1) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (y < World.HEIGHT - 1 && (world.get(x, y + 1) instanceof Heart)) {
-            heal(20);
-            this.moveTo(x, y + 1);
-        } else if (y < World.HEIGHT - 1 && (world.get(x, y + 1) instanceof Floor)
-                || (world.get(x, y + 1) instanceof Bullet)) {
+        Thing t=world.get(x,y+1);
+        if (y < World.HEIGHT - 1 && t instanceof Floor || t instanceof Item || (t instanceof Bullet)) {
             this.moveTo(x, y + 1);
 
         }
@@ -86,10 +85,8 @@ public abstract class Calabash extends Creature {
         if (world.get(x - 1, y) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (x > 0 && (world.get(x - 1, y) instanceof Heart)) {
-            heal(20);
-            this.moveTo(x - 1, y);
-        } else if (x > 0 && (world.get(x - 1, y) instanceof Floor) || (world.get(x - 1, y) instanceof Bullet)) {
+        Thing t= world.get(x-1,y);
+        if (x > 0 && (t instanceof Floor) || t instanceof Item || (t instanceof Bullet)) {
             this.moveTo(x - 1, y);
         }
     }
@@ -100,11 +97,8 @@ public abstract class Calabash extends Creature {
         if (world.get(x + 1, y) instanceof VictorSign) {
             worldScreen.PassLevel();
         }
-        if (x < World.WIDTH - 1 && (world.get(x + 1, y) instanceof Heart)) {
-            heal(20);
-            this.moveTo(x + 1, y);
-        }
-        if (x < World.WIDTH - 1 && (world.get(x + 1, y) instanceof Floor) || (world.get(x + 1, y) instanceof Bullet)) {
+        Thing t = world.get(x+1, y);
+        if (x < World.WIDTH - 1 && (t instanceof Floor) || t instanceof Item || (t instanceof Bullet)) {
             this.moveTo(x + 1, y);
 
         }
@@ -113,12 +107,13 @@ public abstract class Calabash extends Creature {
     public synchronized void attackUp() {
         if (shootCnt >= shootFreq) {
             int x = getX();
-            int y = getY() - 1;
-            if (!(world.get(x, y) instanceof Wall)) {
+            int y = getY() ;
+
+            //if (!(world.get(x, y) instanceof Wall)) {
                 Bullet b = new CalabashBullet(world, worldScreen, attack, 0);
                 world.put(b, x, y);
                 worldScreen.addBullet(b);
-            }
+            //}
             shootCnt = 0;
         }
 
@@ -127,38 +122,38 @@ public abstract class Calabash extends Creature {
     public synchronized void attackDown() {
         if (shootCnt >= shootFreq) {
             int x = getX();
-            int y = getY() + 1;
-            if (!(world.get(x, y) instanceof Wall)) {
+            int y = getY() ;
+            //if (!(world.get(x, y) instanceof Wall)) {
                 Bullet b = new CalabashBullet(world, worldScreen, attack, 1);
                 world.put(b, x, y);
                 worldScreen.addBullet(b);
-            }
+            //}
             shootCnt = 0;
         }
     }
 
     public synchronized void attackLeft() {
         if (shootCnt >= shootFreq) {
-            int x = getX() - 1;
+            int x = getX() ;
             int y = getY();
-            if (!(world.get(x, y) instanceof Wall)) {
+            //if (!(world.get(x, y) instanceof Wall)) {
                 Bullet b = new CalabashBullet(world, worldScreen, attack, 2);
                 world.put(b, x, y);
                 worldScreen.addBullet(b);
-            }
+            //}
             shootCnt = 0;
         }
     }
 
     public synchronized void attackRight() {
         if (shootCnt >= shootFreq) {
-            int x = getX() + 1;
+            int x = getX() ;
             int y = getY();
-            if (!(world.get(x, y) instanceof Wall)) {
+            //if (!(world.get(x, y) instanceof Wall)) {
                 Bullet b = new CalabashBullet(world, worldScreen, attack, 3);
                 world.put(b, x, y);
                 worldScreen.addBullet(b);
-            }
+            //}
             shootCnt = 0;
         }
     }
@@ -172,6 +167,7 @@ public abstract class Calabash extends Creature {
                 TimeUnit.MILLISECONDS.sleep(5);
                 updateGameState();
                 updateShootState(); // 限制射击间隔
+                updateItemState(); //更新拾取物品状态
                 updateStates();
             }
         } catch (InterruptedException e) {
@@ -197,6 +193,22 @@ public abstract class Calabash extends Creature {
     }
 
     public void updateStates() {
+    } 
+    public void updateItemState(){
+        if (world.getItem(getX(), getY())!=null){
+            Thing t= world.getItem(getX(), getY());
+            if (t instanceof Heart){
+                heal(20);
+            }
+            else if (t instanceof Sword){
+                attack+=10;
+            }
+            else if (t instanceof HeartCrystal){
+                maxHP+=20;
+                heal(20);
+            }
+            world.deleteItem(getX(),getY());
+        }
     }
 
     public void updateShootState() {
@@ -214,6 +226,16 @@ public abstract class Calabash extends Creature {
             return res;
         else
             return 100;
+    }
+
+    public void setHP(int HP){
+        this.HP=HP;
+    }
+    public void setMaxHP(int maxHP){
+        this.maxHP=maxHP;
+    }
+    public void setAttack(int attack){
+        this.attack=attack;
     }
 
 }

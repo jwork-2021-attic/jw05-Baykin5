@@ -5,7 +5,9 @@ import screen.WorldScreen;
 import util.World;
 import java.awt.Color;
 
-
+import util.Jar;
+import util.Thing;
+import util.Barrier;
 import creature.Calabash;
 import util.Wall;
 
@@ -16,13 +18,13 @@ public class MonsterBullet extends Bullet {
 
 
     public MonsterBullet(World world, WorldScreen worldScreen, int attack, int sign) {
-        super(new Color(255, 0, 0), (char) 7, world, worldScreen); // red
+        super((char) 7, world, worldScreen); // red
         this.attack = attack;
         this.moveSign = sign;
     }
 
     public MonsterBullet(World world, WorldScreen worldScreen, int attack, int sign,int speed) {
-        super(new Color(255, 0, 0), (char) 7, world, worldScreen); // red
+        super( (char) 7, world, worldScreen); // red
         this.attack = attack;
         this.moveSign = sign;
         refreshFreq=speed;
@@ -42,10 +44,17 @@ public class MonsterBullet extends Bullet {
         if (!hasHit) {
             int x = getX();
             int y = getY();
-            if (world.get(x, y) instanceof Calabash) {
-                world.get(x, y).beHit(attack);
+            Thing t=world.get(x, y);
+            if (t instanceof Calabash) {
+                t.beHit(attack);
                 hasHit = true;
                 worldScreen.deleteBullet(this);
+                world.deleteBullet(this, getX(), getY());
+            }
+            else if (t instanceof Barrier) {
+                hasHit = true;
+                worldScreen.deleteBullet(this);
+                t.beDeleted();
                 world.deleteBullet(this, getX(), getY());
             }
         }
@@ -56,13 +65,21 @@ public class MonsterBullet extends Bullet {
         if (!hasHit) {
             int x = getX() + direction[moveSign][0];
             int y = getY() + direction[moveSign][1];
-            if (!(world.get(x, y) instanceof Wall)) {
-                world.deleteBullet(this, getX(), getY());
-                this.moveTo(x, y);
-            } else {
+            Thing t=world.get(x, y);
+            if (t instanceof Wall || t instanceof Barrier){
                 hasHit = true;
                 worldScreen.deleteBullet(this);
                 world.deleteBullet(this, getX(), getY());
+            }
+            else if (t instanceof Jar){
+                hasHit = true;
+                worldScreen.deleteBullet(this);
+                world.deleteBullet(this, getX(), getY());
+                t.beDeleted();
+            }
+            else{
+                world.deleteBullet(this, getX(), getY());
+                this.moveTo(x, y);
             }
 
         }

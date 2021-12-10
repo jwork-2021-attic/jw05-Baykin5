@@ -9,8 +9,8 @@ import util.Floor;
 
 public abstract class Creature extends Thing implements Runnable{
 
-    public Creature(Color color, char glyph, World world) {
-        super(color, glyph, world);
+    public Creature( char glyph, World world) {
+        super( glyph, world);
     }
 
     public void moveTo(int xPos, int yPos) {

@@ -6,17 +6,29 @@ import creature.Creature;
 public class Tile<T extends Thing> {
 
     private T thing;
+    private T item;
     private ArrayList<T>bullets;
     private int xPos;
     private int yPos;
 
     public T getThing() {   //Creature>Bullet>util
-        if (thing instanceof Creature)
+        if (!(thing instanceof Floor))
             return thing;
+        else if (item!=null){
+            return item;
+        }
         else if (!bullets.isEmpty())
             return bullets.get(0);
         else
             return thing;
+    }
+
+    public T getItem(){
+        return item;
+    }
+
+    public void deleteItem(){
+        item=null;
     }
 
     public ArrayList<T> getBullets(){
@@ -26,6 +38,10 @@ public class Tile<T extends Thing> {
         if (thing instanceof Bullet){
             bullets.add(thing);
             thing.setTile(this);
+        }
+        else if (thing instanceof Item){
+            this.item=thing;
+            this.item.setTile(this);
         }
         else{
             this.thing = thing;

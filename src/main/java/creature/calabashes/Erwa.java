@@ -2,6 +2,9 @@ package creature.calabashes;
 
 import java.util.ArrayList;
 
+import util.Thing;
+import util.Heart;
+import util.Sword;
 import util.World;
 import java.awt.Color;
 import creature.Calabash;
@@ -13,10 +16,10 @@ public class Erwa extends Calabash {
     private int skillAttack = 50;
 
     public Erwa(World world, WorldScreen worldScreen) {
-        super(new Color(0, 255, 0), world, worldScreen);
+        super( world, worldScreen);
         attack = 20;
         maxHP = 100;
-        HP = 100;
+        HP = maxHP;
         skillCD = 3 * 1000;
         skillCDCount = skillCD;
     }
@@ -39,6 +42,18 @@ public class Erwa extends Calabash {
 
     @Override
     public void updateStates() {
+
+        if (world.getItem(getX(), getY())!=null){
+            Thing t= world.getItem(getX(), getY());
+            if (t instanceof Heart){
+                heal(20);
+            }
+            else if (t instanceof Sword){
+                attack+=10;
+            }
+            world.deleteItem(getX(),getY());
+        }
+
         if (skillCDCount < skillCD) {
             skillCDCount += (nowTime - lastTime);
         }

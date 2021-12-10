@@ -20,17 +20,12 @@ public class Thing {
         this.tile = tile;
     }
 
-    public Thing(Color color, char glyph, World world) {
-        this.color = color;
+    public Thing( char glyph, World world) {
         this.glyph = glyph;
         this.world = world;
     }
 
-    protected Color color;
 
-    public Color getColor() {
-        return this.color;
-    }
 
     private final char glyph;
 
@@ -40,6 +35,10 @@ public class Thing {
 
 
     public void beHit(int attack){
+
+    }
+
+    public void beDeleted(){
 
     }
 
