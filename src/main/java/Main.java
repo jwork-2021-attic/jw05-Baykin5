@@ -20,7 +20,7 @@ public class Main extends JFrame implements KeyListener {
 
     public Main() {
         super();
-        terminal = new AsciiPanel(50,28, AsciiFont.Baykin_30_30);
+        terminal = new AsciiPanel(50,28, AsciiFont.Baykin_15_15);
         add(terminal);
         pack();
         screen = new StartScreen();

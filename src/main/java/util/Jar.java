@@ -8,21 +8,24 @@ public class Jar extends Thing {
     boolean treasureSign=false;
     int treasureType=0;
 
-    public Jar(World world){
+    long seed;
+    Random r;
+
+    public Jar(World world,long seed){
         super( (char) 11, world);
-        int s=new Random().nextInt(1);
+        this.seed=seed;
+        r=new Random(seed);
+        int s=r.nextInt(1);
         if (s==0){
             treasureSign=true;
-            int t=new Random().nextInt(20);
+            int t=r.nextInt(20);
             if (t<2 && t>=0){
                 treasureType=1;  //sword
             }
-            else if (t<4 && t>=2){
+            else if (t<=4 && t>=2){
                 treasureType=2;  //heart cystal
             }
-            else if (t==4){
-                treasureType=3;  //
-            }
+
             else{
                 treasureType=0;  //heart
             }
@@ -37,9 +40,6 @@ public class Jar extends Thing {
                     world.put(new Sword(world),getX(),getY());
                     break;
                 case 2:
-                    world.put(new HeartCrystal(world),getX(),getY());
-                    break;
-                case 3:
                     world.put(new HeartCrystal(world),getX(),getY());
                     break;
                 default:

@@ -16,7 +16,7 @@ public class Erwa extends Calabash {
     private int skillAttack = 50;
 
     public Erwa(World world, WorldScreen worldScreen) {
-        super( world, worldScreen);
+        super((char)17, world, worldScreen);
         attack = 20;
         maxHP = 100;
         HP = maxHP;

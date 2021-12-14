@@ -3,6 +3,8 @@ package creature;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import util.Sword;
 import util.HeartCrystal;
 import util.Thing;
@@ -31,8 +33,8 @@ public abstract class Calabash extends Creature {
     protected int shootCnt;
     protected int shootFreq = (int) (0.25 * 1000); // can shoot 1 per 500ms
 
-    public Calabash( World world, WorldScreen worldScreen) {
-        super( (char) 2, world);
+    public Calabash(char glyph,World world, WorldScreen worldScreen) {
+        super( (char) glyph, world);
         this.worldScreen = worldScreen;
         lastTime = System.currentTimeMillis();
         shootCnt = shootFreq;
@@ -188,11 +190,12 @@ public abstract class Calabash extends Creature {
     }
 
     public void updateGameState() {
-        if (HP == 0)
-            worldScreen.Lose();
+        if (HP <= 0)
+            worldScreen.deleteCalabash(this);
     }
 
     public void updateStates() {
+
     } 
     public void updateItemState(){
         if (world.getItem(getX(), getY())!=null){
@@ -214,6 +217,9 @@ public abstract class Calabash extends Creature {
     public void updateShootState() {
         nowTime = System.currentTimeMillis();
         shootCnt += nowTime - lastTime;
+    }
+    public Boolean isAlive(){
+        return HP>0;
     }
 
     public int getAttack() {

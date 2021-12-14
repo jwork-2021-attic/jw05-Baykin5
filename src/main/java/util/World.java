@@ -35,6 +35,9 @@ public class World {
         this.tiles[x][y].setThing(t);
     }
 
+    public void deleteCalabash(Thing calabash,int x,int y){
+        this.tiles[x][y].setThing(new Floor(this));
+    }
     public void deleteBullet(Thing bullet,int x,int y){
         this.tiles[x][y].getBullets().remove(bullet);
     }
@@ -44,5 +47,4 @@ public class World {
     public void deleteItem(int x,int y){
         this.tiles[x][y].deleteItem();
     }
-
 }

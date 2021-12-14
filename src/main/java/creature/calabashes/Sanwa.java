@@ -15,7 +15,7 @@ public class Sanwa extends Calabash {
     private int buffedCount=0;
 
     public Sanwa(World world,WorldScreen worldScreen){
-        super(world,worldScreen);
+        super((char)18,world,worldScreen);
         attack=20;
         maxHP=100;
         HP=maxHP;

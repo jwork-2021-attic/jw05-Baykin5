@@ -15,14 +15,14 @@ public class StartScreen implements Screen {
     
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("Calabash Adventure", 6, 5);
+        terminal.write("Calabash Adventure", 12, 5);
         terminal.write("Use Up/Down Key to select game mode", 0, 20);
         terminal.write("Single Game",2,22);
         if (state==0)
             terminal.write((char)(26),0,22);
         else
             terminal.write((char)(26),0,24);
-        terminal.write("Double Game",2,24);
+        terminal.write("Multiplayer Game",2,24);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class StartScreen implements Screen {
                 if (state==0)
                     return new LoadDataScreen(); //Single Game
                 else
-                    return new SelectScreen();  
+                    return new NetworkSelectScreen();   //Double Game
             case KeyEvent.VK_W:
                 state=0;
                 return this;

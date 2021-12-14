@@ -19,6 +19,8 @@ public class AsciiFont {
     public static final AsciiFont QBICFEET_10x10 = new AsciiFont("resources/qbicfeet_10x10.png", 10, 10);
     public static final AsciiFont TALRYTH_15_15 = new AsciiFont("resources/talryth_square_15x15.png", 15, 15);
     
+
+    public static final AsciiFont Baykin_15_15=new AsciiFont("resources/Baykin_15x15.png",15,15);
     public static final AsciiFont Baykin_30_30 = new AsciiFont("resources/Baykin_30x30.png",30,30);
 
     private String fontFilename;

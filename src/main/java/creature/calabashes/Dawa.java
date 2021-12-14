@@ -15,7 +15,7 @@ public class Dawa extends Calabash{
     private int buffedCount=0;
 
     public Dawa(World world,WorldScreen worldScreen){
-        super(world,worldScreen);
+        super((char)16,world,worldScreen);
         attack=20;
         maxHP=100;
         HP=maxHP;

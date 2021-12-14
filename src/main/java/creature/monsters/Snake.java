@@ -2,6 +2,7 @@ package creature.monsters;
 
 import java.awt.Color;
 import util.World;
+import creature.Calabash;
 import creature.Monster;
 import screen.WorldScreen;
 
@@ -14,14 +15,18 @@ public class Snake extends Monster {
     private int shootCnt = 0;
     private static int actionFreq = 5;
     private int actionCnt = 0;
-    static private int bulletFreq=5;
+    static private int bulletFreq = 5;
 
+    long seed;
+    Random r;
 
+    public Snake(World world, WorldScreen worldScreen, long seed) {
+        super((char) 224, world, worldScreen);
+        this.seed = seed;
+        r = new Random(seed);
 
-    public Snake(World world, WorldScreen worldScreen) {
-        super( (char) 224, world, worldScreen);
         attack = 20;
-        maxHP=2000;
+        maxHP = 2000;
         HP = maxHP;
     }
 
@@ -43,54 +48,62 @@ public class Snake extends Monster {
 
     public void UpdateState() {
         actionCnt++;
-        if (HP <= 0)
-        {
+        if (HP <= 0) {
             worldScreen.DefeatBoss();
         }
 
     }
 
     public void RandomMove() {
-        int Cx = worldScreen.getCalabashX();
-        int Cy = worldScreen.getCalabashY();
+        Calabash temp=getNearestCalabash();
+        int Cx = temp.getX();
+        int Cy = temp.getY();
         int x = getX();
         int y = getY();
-        int t = new Random().nextInt(2);
+        int t = r.nextInt(2);
         switch (t) {
-        case 0: {
-            if (x < Cx) { // Calabash is on the right
-                goRight();
-            } else if (x > Cx) {
-                goLeft();
+            case 0: {
+                if (x < Cx) { // Calabash is on the right
+                    goRight();
+                } else if (x > Cx) {
+                    goLeft();
+                }
+                break;
             }
-            break;
-        }
-        case 1: {
-            if (y < Cy) {// Calabash is on the down
-                goDown();
+            case 1: {
+                if (y < Cy) {// Calabash is on the down
+                    goDown();
 
-            } else if (y > Cy) {
-                goUp();
+                } else if (y > Cy) {
+                    goUp();
+                }
+                break;
             }
-            break;
-        }
         }
     }
 
     public void Attack() {
         if (shootCnt == shootFreq) { // shoot per 2 moving
+            Calabash temp=getNearestCalabash();
+            int Cx = temp.getX();
+            int Cy = temp.getY();
+            int x = getX();
+            int y = getY();
+            if (Math.abs((Cx - x)) > Math.abs(Cy - y)) {
+                if (x < Cx) { // Calabash is on the right
+                    attackRight(bulletFreq);
+                } else if (x > Cx) {
+                    attackLeft(bulletFreq);
+                }
 
-            attackRight(bulletFreq);
-            attackRightDown(bulletFreq);
+            } else {
+                if (y < Cy) {// Calabash is on the down
+                    attackDown(bulletFreq);
 
-            attackLeft(bulletFreq);
-            attackLeftUp(bulletFreq);
-            attackLeftDown(bulletFreq);
-
-            attackDown(bulletFreq);
-            attackUp(bulletFreq);
-            attackRightUp(bulletFreq);
-
+                } else if (y > Cy) {
+                    attackUp(bulletFreq);
+                }
+            }
             shootCnt = 0;
         } else
             shootCnt++;

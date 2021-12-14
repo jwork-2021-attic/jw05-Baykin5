@@ -27,7 +27,6 @@ public abstract class Monster extends Creature {
     public Monster(char glyph, World world, WorldScreen worldScreen) {
         super(glyph, world);
         this.worldScreen = worldScreen;
-
     }
 
     @Override
@@ -95,83 +94,117 @@ public abstract class Monster extends Creature {
     public synchronized void attackUp(int speed) {
         int x = getX();
         int y = getY();
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 0, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 0, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
     }
 
     public synchronized void attackDown(int speed) {
         int x = getX();
         int y = getY();
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 1, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 1, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
     }
 
     public synchronized void attackLeft(int speed) {
-        int x = getX() ;
+        int x = getX();
         int y = getY();
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 2, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 2, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
     }
 
     public synchronized void attackRight(int speed) {
         int x = getX();
         int y = getY();
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 3, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-       // }
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 3, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
 
     }
 
     public synchronized void attackLeftUp(int speed) {
-        int x = getX() ;
+        int x = getX();
         int y = getY();
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 4, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 4, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
     }
 
     public synchronized void attackRightUp(int speed) {
-        int x = getX() ;
-        int y = getY() ;
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 5, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        int x = getX();
+        int y = getY();
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 5, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
     }
 
     public synchronized void attackRightDown(int speed) {
-        int x = getX() ;
-        int y = getY() ;
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 6, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        int x = getX();
+        int y = getY();
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 6, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
     }
 
     public synchronized void attackLeftDown(int speed) {
-        int x = getX() ;
-        int y = getY() ;
-        //if (!(world.get(x, y) instanceof Wall)) {
-            Bullet b = new MonsterBullet(world, worldScreen, attack, 7, speed);
-            world.put(b, x, y);
-            worldScreen.addBullet(b);
-        //}
+        int x = getX();
+        int y = getY();
+        // if (!(world.get(x, y) instanceof Wall)) {
+        Bullet b = new MonsterBullet(world, worldScreen, attack, 7, speed);
+        world.put(b, x, y);
+        worldScreen.addBullet(b);
+        // }
 
+    }
+
+    public Calabash getNearestCalabash() {
+        int min = 75;
+        int minID = 1;
+        if (worldScreen.getCalabash().isAlive()) {
+            int dis1 = worldScreen.getCalabash().getX() + worldScreen.getCalabash().getY();
+            if (min > dis1)
+                min = dis1;
+        }
+        if (worldScreen.getCalabash2().isAlive()) {
+            int dis2 = worldScreen.getCalabash2().getX() + worldScreen.getCalabash2().getY();
+            if (min > dis2) {
+                min = dis2;
+                minID = 2;
+            }
+        }
+        if (worldScreen.getCalabash3().isAlive()) {
+            int dis3 = worldScreen.getCalabash3().getX() + worldScreen.getCalabash3().getY();
+            if (min > dis3) {
+                min = dis3;
+                minID = 3;
+            }
+        }
+        switch (minID) {
+            case 1:
+                return worldScreen.getCalabash();
+            case 2:
+                return worldScreen.getCalabash2();
+            case 3:
+                return worldScreen.getCalabash3();
+            default:
+                return worldScreen.getCalabash();
+        }
     }
 
     public abstract void run();

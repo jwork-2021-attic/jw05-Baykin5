@@ -2,6 +2,7 @@ package creature.monsters;
 
 import java.awt.Color;
 import util.World;
+import creature.Calabash;
 import creature.Monster;
 import screen.WorldScreen;
 
@@ -9,6 +10,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Bat extends Monster {
+    long seed;
+    Random r;
+
     private static int shootFreq=2;
     private int shootCnt=0;
     private static int actionFreq=5;
@@ -18,12 +22,14 @@ public class Bat extends Monster {
 
 
 
-    public Bat(World world, WorldScreen worldScreen) {
+    public Bat(World world, WorldScreen worldScreen,long seed) {
         super( (char) 234, world, worldScreen);
         attack = 20;
         maxHP=100;
         HP = maxHP;
-        int t=new Random().nextInt(3);
+        this.seed=seed;
+        r=new Random(seed);
+        int t=r.nextInt(3);
         if (t==0)
             hasHeart=true;
     }
@@ -57,11 +63,12 @@ public class Bat extends Monster {
     }
 
     public void RandomMove() {
-        int Cx = worldScreen.getCalabashX();
-        int Cy = worldScreen.getCalabashY();
+        Calabash temp=getNearestCalabash();
+        int Cx = temp.getX();
+        int Cy = temp.getY();
         int x = getX();
         int y = getY();
-        int t = new Random().nextInt(2);
+        int t = r.nextInt(2);
         switch (t) {
         case 0: {
             if (x < Cx) { // Calabash is on the right
@@ -87,8 +94,9 @@ public class Bat extends Monster {
 
     public void RandomAttack() {
         if (shootCnt == shootFreq) { // shoot per 2 moving
-            int Cx = worldScreen.getCalabashX();
-            int Cy = worldScreen.getCalabashY();
+            Calabash temp=getNearestCalabash();
+            int Cx = temp.getX();
+            int Cy = temp.getY();
             int x = getX();
             int y = getY();
             if (Math.abs((Cx - x)) > Math.abs(Cy - y)) {
