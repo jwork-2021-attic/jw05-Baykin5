@@ -17,7 +17,7 @@ public class RefreshRunnable implements Runnable{
         try{
             while(true){
                 //System.out.println("x");
-                TimeUnit.MILLISECONDS.sleep(33);   //FPS=30
+                TimeUnit.MILLISECONDS.sleep(50);   //FPS=30
                 frame.repaint();
             }
         }

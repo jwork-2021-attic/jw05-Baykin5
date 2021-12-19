@@ -12,7 +12,7 @@ public class LevelController implements Runnable { // 控制关卡运行
 
     WorldScreen worldScreen;
 
-    static final int[]TotalMonsterNums={1,1,10000};
+    static final int[]TotalMonsterNums={5,10,10000};
     static final int[]NormalMonsterTypeNums={1,2,2};
     static final int BossTypeNum=1;
     static final int MaxMonsterNum=2; //Max Monster Num MeanWhile

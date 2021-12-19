@@ -2,7 +2,6 @@ package map;
 
 import java.util.Random;
 
-import util.Jar;
 import util.World;
 
 public class MapGenerator {
