@@ -1,6 +1,5 @@
 package creature.monsters;
 
-import java.awt.Color;
 import util.World;
 import creature.Calabash;
 import creature.Monster;

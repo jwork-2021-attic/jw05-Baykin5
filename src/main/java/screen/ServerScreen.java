@@ -7,10 +7,9 @@ import asciiPanel.AsciiPanel;
 import network.NIOServer;
 
 public class ServerScreen implements Screen {
-
+    NIOServer nioServer;
     public ServerScreen() throws IOException{
-        NIOServer nioServer=new NIOServer("localhost", 9093);
-        nioServer.startServer();
+        nioServer=new NIOServer("localhost", 9093);
     }
 
     @Override
@@ -20,6 +19,7 @@ public class ServerScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) throws IOException {
+        nioServer.startServer();
         return this;
     }
 

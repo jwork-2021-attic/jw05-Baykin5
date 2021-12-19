@@ -67,11 +67,11 @@ public class NetworkSelectScreen implements Screen {
                         break;
                 }
 
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
                 if (state > 0)
                     state--;
                 return this;
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
                 if (state < 3)
                     state++;
                 return this;

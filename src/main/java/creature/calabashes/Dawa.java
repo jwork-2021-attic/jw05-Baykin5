@@ -1,10 +1,7 @@
 package creature.calabashes;
 
-import util.Heart;
-import util.Sword;
-import util.Thing;
+
 import util.World;
-import java.awt.Color;
 import creature.Calabash;
 import screen.WorldScreen;
 
@@ -26,7 +23,7 @@ public class Dawa extends Calabash{
 
     public void skill(){
         if (skillCDCount>=skillCD){
-            attack+=20;
+            attack+=30;
             buffed=true;
             skillCDCount=0;
         }
@@ -40,7 +37,7 @@ public class Dawa extends Calabash{
             if (buffedCount>=buffedTime){
                 buffed=false;
                 buffedCount=0;
-                attack-=20;
+                attack-=30;
             }
         }
         if (skillCDCount<skillCD){

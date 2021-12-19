@@ -1,11 +1,9 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
-import util.World;
 import screen.Screen;
 import screen.StartScreen;
 import threadController.RefreshRunnable;

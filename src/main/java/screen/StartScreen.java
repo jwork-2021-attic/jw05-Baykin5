@@ -15,7 +15,7 @@ public class StartScreen implements Screen {
     
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("Calabash Adventure", 12, 5);
+        terminal.write("Calabash Adventure", 14, 5);
         terminal.write("Use Up/Down Key to select game mode", 0, 20);
         terminal.write("Single Game",2,22);
         if (state==0)
@@ -33,10 +33,10 @@ public class StartScreen implements Screen {
                     return new LoadDataScreen(); //Single Game
                 else
                     return new NetworkSelectScreen();   //Double Game
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
                 state=0;
                 return this;
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
                 state=1;
                 return this;
             default:

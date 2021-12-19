@@ -1,6 +1,5 @@
 package util;
 
-
 public class World {
 
     public static final int WIDTH = 35;
@@ -22,7 +21,7 @@ public class World {
         }
     }
 
-    public Thing getItem(int x,int y){
+    public Thing getItem(int x, int y) {
         return this.tiles[x][y].getItem();
     }
 
@@ -30,21 +29,23 @@ public class World {
         return this.tiles[x][y].getThing();
     }
 
-
     public void put(Thing t, int x, int y) {
         this.tiles[x][y].setThing(t);
     }
 
-    public void deleteCalabash(Thing calabash,int x,int y){
+    public void deleteCalabash(Thing calabash, int x, int y) {
         this.tiles[x][y].setThing(new Floor(this));
     }
-    public void deleteBullet(Thing bullet,int x,int y){
+
+    public void deleteBullet(Thing bullet, int x, int y) {
         this.tiles[x][y].getBullets().remove(bullet);
     }
-    public void deleteMonster(Thing monster,int x,int y){
+
+    public void deleteMonster(Thing monster, int x, int y) {
         this.tiles[x][y].setThing(new Floor(this));
     }
-    public void deleteItem(int x,int y){
+
+    public void deleteItem(int x, int y) {
         this.tiles[x][y].deleteItem();
     }
 }

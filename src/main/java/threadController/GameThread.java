@@ -48,8 +48,4 @@ public class GameThread extends Thread{
     public void shutdown(){
         exec.shutdownNow();
     }
-    
-
-
-
 }

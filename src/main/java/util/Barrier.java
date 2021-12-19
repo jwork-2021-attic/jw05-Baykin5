@@ -1,7 +1,5 @@
 package util;
 
-import java.awt.Color;
-
 
 public class Barrier extends Thing {
     boolean treasureSign=false;

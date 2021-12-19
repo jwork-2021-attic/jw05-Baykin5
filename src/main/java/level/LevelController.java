@@ -15,10 +15,10 @@ public class LevelController implements Runnable { // 控制关卡运行
     static final int[]TotalMonsterNums={1,1,10000};
     static final int[]NormalMonsterTypeNums={1,2,2};
     static final int BossTypeNum=1;
+    static final int MaxMonsterNum=2; //Max Monster Num MeanWhile
 
     int TotalMonsterNum;
     int HasCreateNum;
-    int MaxMonsterNum; // the max num of monster at the same time
     int NormalMonsterTypeNum;
     int CreateHeartFreq=3;
     int CreateHeartCnt=0;
@@ -33,7 +33,6 @@ public class LevelController implements Runnable { // 控制关卡运行
         TotalMonsterNum = TotalMonsterNums[level];
         NormalMonsterTypeNum = NormalMonsterTypeNums[level];
         HasCreateNum = 0;
-        MaxMonsterNum = 1;
         this.bossSign=bossSign;
         this.seed=seed;
         r= new Random(seed);
@@ -44,7 +43,7 @@ public class LevelController implements Runnable { // 控制关卡运行
         TotalMonsterNum = TotalMonsterNums[level];
         NormalMonsterTypeNum = NormalMonsterTypeNums[level];
         HasCreateNum = 0;
-        MaxMonsterNum = 1;
+
         this.bossSign=worldScreen.getBossSign();
         this.seed=worldScreen.getSeed();
         r= new Random(seed);
@@ -57,6 +56,7 @@ public class LevelController implements Runnable { // 控制关卡运行
                 int t=r.nextInt(BossTypeNum);
                 worldScreen.addBoss(t,World.WIDTH/2,World.HEIGHT/2);
             }
+
             int nowMonsternum=0;
             while (HasCreateNum < TotalMonsterNum && !(worldScreen.hasDefeatBoss())) {
                 TimeUnit.MILLISECONDS.sleep(3000);

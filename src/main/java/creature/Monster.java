@@ -1,11 +1,8 @@
 package creature;
 
-import java.awt.Color;
-
 import screen.WorldScreen;
 import util.World;
 import util.Floor;
-import util.Wall;
 import bullet.Bullet;
 import bullet.MonsterBullet;
 import util.Item;
@@ -177,19 +174,22 @@ public abstract class Monster extends Creature {
         int min = 75;
         int minID = 1;
         if (worldScreen.getCalabash().isAlive()) {
-            int dis1 = worldScreen.getCalabash().getX() + worldScreen.getCalabash().getY();
+            int dis1 = Math.abs(worldScreen.getCalabash().getX() - getX())
+                    + Math.abs(worldScreen.getCalabash().getY() - getY());
             if (min > dis1)
                 min = dis1;
         }
-        if (worldScreen.getCalabash2().isAlive()) {
-            int dis2 = worldScreen.getCalabash2().getX() + worldScreen.getCalabash2().getY();
+        if (worldScreen.getCalabash2() != null && worldScreen.getCalabash2().isAlive()) {
+            int dis2 = Math.abs(worldScreen.getCalabash2().getX() - getX())
+                    + Math.abs(worldScreen.getCalabash2().getY() - getY());
             if (min > dis2) {
                 min = dis2;
                 minID = 2;
             }
         }
-        if (worldScreen.getCalabash3().isAlive()) {
-            int dis3 = worldScreen.getCalabash3().getX() + worldScreen.getCalabash3().getY();
+        if (worldScreen.getCalabash3() != null && worldScreen.getCalabash3().isAlive()) {
+            int dis3 = Math.abs(worldScreen.getCalabash3().getX() - getX())
+                    + Math.abs(worldScreen.getCalabash3().getY() - getY());
             if (min > dis3) {
                 min = dis3;
                 minID = 3;
@@ -206,6 +206,10 @@ public abstract class Monster extends Creature {
                 return worldScreen.getCalabash();
         }
     }
+
+    public abstract void RandomMove();
+
+    public abstract void RandomAttack();
 
     public abstract void run();
 }

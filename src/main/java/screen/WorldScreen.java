@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 
 import gamedata.Data;
 import creature.Creature;
@@ -42,13 +41,13 @@ public class WorldScreen implements Screen {
     Calabash calabash2; // 2p
     Calabash calabash3; // 3p
 
-    ArrayList<Monster> monsters;
+    public ArrayList<Monster> monsters;
     ArrayList<Bullet> calabashBullets;
     ArrayList<Bullet> monsterBullets;
     ArrayList<Bullet> deleteCalabashBullets;
     ArrayList<Bullet> deleteMonsterBullets;
     LevelController levelController;
-    GameThread gameThread;
+    public GameThread gameThread;
 
     boolean GameRunning = false;
     int level;
@@ -162,7 +161,6 @@ public class WorldScreen implements Screen {
         levelController = new LevelController(this, BossSign, seed);
         gameThread = new GameThread(this);
         gameThread.start();
-
     }
 
     class TempRunnable implements Runnable {
@@ -241,11 +239,12 @@ public class WorldScreen implements Screen {
         } else
             maptype = r.nextInt(MapTypeNum);
 
+        
         MapGenerator mapGenerator = new MapGenerator(seed);
         mapGenerator.GenarateMap(maptype);
         raws = mapGenerator.getMap();
         CreateMap(raws);
-
+        clearItems();
         calabash.setWorld(world, this);
         world.put(this.calabash, 1, 20);
 
@@ -267,12 +266,10 @@ public class WorldScreen implements Screen {
         if (calabash.isAlive()) {
             if (playerID == 1)
                 nioClient.AskForSeed();
-        }
-        else if (calabash2.isAlive()) {
+        } else if (calabash2.isAlive()) {
             if (playerID == 2)
                 nioClient.AskForSeed();
-        } 
-        else if (calabash3.isAlive()) {
+        } else if (calabash3.isAlive()) {
             if (playerID == 3)
                 nioClient.AskForSeed();
         }
@@ -289,6 +286,7 @@ public class WorldScreen implements Screen {
         mapGenerator.GenarateMap(maptype);
         raws = mapGenerator.getMap();
         CreateMap(raws);
+        clearItems();
 
         if (calabash.isAlive()) {
             calabash.setWorld(world, this);
@@ -329,6 +327,14 @@ public class WorldScreen implements Screen {
                         break;
                 }
             }
+    }
+
+    public void clearItems(){
+        for (int i=0;i<World.HEIGHT;i++){
+            for (int j=0;j<World.WIDTH;j++){
+                world.deleteItem(j, i);
+            }
+        }
     }
 
     public boolean getBossSign() {
@@ -521,7 +527,7 @@ public class WorldScreen implements Screen {
             terminal.write("BOSS:", 0, 25);
             Monster m = monsters.get(0);
             for (int i = 0; i < m.getHP() * 35 / m.getMaxHP(); i++)
-                terminal.write((char) 177, 8 + i, 25, AsciiPanel.white);
+                terminal.write((char) 177, 8 + i, 25);
         }
 
     }
@@ -588,6 +594,8 @@ public class WorldScreen implements Screen {
             if (winSign) {
                 if (level == TotalLevelNum - 1) {
                     winSign = false;
+                    Data data= new Data();
+                    data.clear("SaveData.txt");
                     return new WinScreen();
                 } else {
                     SingleGameWin();

@@ -1,13 +1,10 @@
 package screen;
 
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import asciiPanel.AsciiPanel;
 import gamedata.Data;
-import util.World;
 
 public class LoadDataScreen implements Screen {
 
@@ -53,10 +50,10 @@ public class LoadDataScreen implements Screen {
                 }
                 else
                     return new WorldScreen(data);
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
                 state=0;
                 return this;
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
                 if (hasData)
                     state=1;
                 return this;

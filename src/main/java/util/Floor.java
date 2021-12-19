@@ -1,6 +1,5 @@
 package util;
 
-import java.awt.Color;
 
 public class Floor extends Thing {
 

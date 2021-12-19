@@ -48,11 +48,11 @@ public class SelectScreen implements Screen {
         switch (key.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 return new WorldScreen(calabashType);
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
                 if (calabashType>1)
                     calabashType-=1;
                 return this;
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
                 if (calabashType<3)
                     calabashType+=1;
                 return this;

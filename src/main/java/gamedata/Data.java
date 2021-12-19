@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import creature.Calabash;
 import util.World;
 
 public class Data {
@@ -119,6 +118,22 @@ public class Data {
                 out.close();
         }
 
+    }
+
+    public void clear(String file) throws IOException{
+        FileOutputStream out = null;
+        File tempFile=new File(file);
+        if (!tempFile.exists()){
+            tempFile.createNewFile();
+        }
+        
+        out= new FileOutputStream(file);
+        try {
+            out.write('0');
+        } finally {
+            if (out != null)
+                out.close();
+        }
     }
 
     public int getLevel() {

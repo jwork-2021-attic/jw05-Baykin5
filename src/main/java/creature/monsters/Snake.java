@@ -1,6 +1,5 @@
 package creature.monsters;
 
-import java.awt.Color;
 import util.World;
 import creature.Calabash;
 import creature.Monster;
@@ -37,7 +36,7 @@ public class Snake extends Monster {
                 UpdateState();
                 if (HP > 0 && actionCnt == actionFreq) {
                     actionCnt = 0;
-                    Attack();
+                    RandomAttack();
                     RandomMove();
                 }
             }
@@ -82,7 +81,7 @@ public class Snake extends Monster {
         }
     }
 
-    public void Attack() {
+    public void RandomAttack() {
         if (shootCnt == shootFreq) { // shoot per 2 moving
             Calabash temp=getNearestCalabash();
             int Cx = temp.getX();
@@ -91,17 +90,25 @@ public class Snake extends Monster {
             int y = getY();
             if (Math.abs((Cx - x)) > Math.abs(Cy - y)) {
                 if (x < Cx) { // Calabash is on the right
+                    attackRightUp(bulletFreq);
                     attackRight(bulletFreq);
+                    attackRightDown(bulletFreq);
                 } else if (x > Cx) {
+                    attackLeftUp(bulletFreq);
                     attackLeft(bulletFreq);
+                    attackLeftDown(bulletFreq);
                 }
 
             } else {
                 if (y < Cy) {// Calabash is on the down
+                    attackLeftDown(bulletFreq);
                     attackDown(bulletFreq);
+                    attackRightDown(bulletFreq);
 
                 } else if (y > Cy) {
+                    attackLeftUp(bulletFreq);
                     attackUp(bulletFreq);
+                    attackRightUp(bulletFreq);
                 }
             }
             shootCnt = 0;

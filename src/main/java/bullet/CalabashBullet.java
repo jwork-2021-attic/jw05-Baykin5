@@ -3,7 +3,6 @@ package bullet;
 import screen.WorldScreen;
 
 import util.World;
-import java.awt.Color;
 
 import util.Thing;
 import creature.Monster;
@@ -20,23 +19,23 @@ public class CalabashBullet extends Bullet {
 
     }
 
-    public void Refresh(){
+    public void Refresh() {
         UpdateState();
         Move();
         UpdateState();
     }
+
     public void UpdateState() {
         if (!hasHit) {
             int x = getX();
             int y = getY();
-            Thing t=world.get(x, y);
+            Thing t = world.get(x, y);
             if (t instanceof Monster) {
                 t.beHit(attack);
                 hasHit = true;
                 worldScreen.deleteBullet(this);
                 world.deleteBullet(this, getX(), getY());
-            }
-            else if (t instanceof Barrier) {
+            } else if (t instanceof Barrier) {
                 hasHit = true;
                 worldScreen.deleteBullet(this);
                 t.beDeleted();
@@ -50,19 +49,17 @@ public class CalabashBullet extends Bullet {
             int x = getX() + direction[moveSign][0];
             int y = getY() + direction[moveSign][1];
 
-            Thing t=world.get(x, y);
-            if (t instanceof Wall || t instanceof Barrier){
+            Thing t = world.get(x, y);
+            if (t instanceof Wall || t instanceof Barrier) {
                 hasHit = true;
                 worldScreen.deleteBullet(this);
                 world.deleteBullet(this, getX(), getY());
-            }
-            else if (t instanceof Jar){
+            } else if (t instanceof Jar) {
                 hasHit = true;
                 worldScreen.deleteBullet(this);
                 world.deleteBullet(this, getX(), getY());
                 t.beDeleted();
-            }
-            else{
+            } else {
                 world.deleteBullet(this, getX(), getY());
                 this.moveTo(x, y);
             }

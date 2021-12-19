@@ -4,7 +4,6 @@ import util.Thing;
 import util.Heart;
 import util.Sword;
 import util.World;
-import java.awt.Color;
 import creature.Calabash;
 import screen.WorldScreen;
 
