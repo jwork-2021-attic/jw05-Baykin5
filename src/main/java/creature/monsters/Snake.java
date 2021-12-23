@@ -23,6 +23,7 @@ public class Snake extends Monster {
         super((char) 224, world, worldScreen);
         this.seed = seed;
         r = new Random(seed);
+        //this.id=id;
 
         attack = 20;
         maxHP = 2000;
@@ -33,11 +34,12 @@ public class Snake extends Monster {
         try {
             while (HP > 0) {
                 TimeUnit.MILLISECONDS.sleep(refreshFreq);
+                //System.out.println("Snake"+id+" Action");
                 UpdateState();
                 if (HP > 0 && actionCnt == actionFreq) {
                     actionCnt = 0;
-                    RandomAttack();
                     RandomMove();
+                    RandomAttack();
                 }
             }
         } catch (InterruptedException e) {

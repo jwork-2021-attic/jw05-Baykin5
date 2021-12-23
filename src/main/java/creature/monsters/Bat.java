@@ -28,6 +28,7 @@ public class Bat extends Monster {
         HP = maxHP;
         this.seed=seed;
         r=new Random(seed);
+        //this.id=id;
         int t=r.nextInt(3);
         if (t==0)
             hasHeart=true;
@@ -37,11 +38,12 @@ public class Bat extends Monster {
         try {
             while (HP > 0) {
                 TimeUnit.MILLISECONDS.sleep(refreshFreq);
+                //System.out.println("Bat"+id+" Action");
                 UpdateState();
                 if (HP > 0 && actionCnt==actionFreq) {
                     actionCnt=0;
-                    RandomAttack();
                     RandomMove();
+                    RandomAttack();
                 }
             }
         } catch (InterruptedException e) {

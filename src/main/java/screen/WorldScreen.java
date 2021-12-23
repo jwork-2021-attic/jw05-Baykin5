@@ -71,6 +71,8 @@ public class WorldScreen implements Screen {
     long seed;
     Random r;
 
+    int id=0;
+
     public WorldScreen(int calabashType) throws IOException { // 单人模式 新游戏
         playerID = 1;
         seed = new Random().nextInt(55555);
@@ -174,7 +176,7 @@ public class WorldScreen implements Screen {
         public void run() {
             while (true) {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(100);
+                    TimeUnit.MILLISECONDS.sleep(33);
                     client.read();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -418,6 +420,7 @@ public class WorldScreen implements Screen {
             world.put(m, x, y);
             monsters.add(m);
             gameThread.addMonsterThread(m);
+            id++;
             return true;
         } else
             return false;
@@ -437,6 +440,7 @@ public class WorldScreen implements Screen {
             world.put(boss, x, y);
             monsters.add(boss);
             gameThread.addMonsterThread(boss);
+            id++;
             return true;
         } else
             return false;
@@ -461,6 +465,7 @@ public class WorldScreen implements Screen {
     }
 
     public void deleteMonster(Monster m) {
+        gameThread.deleteMonster(m);
         monsters.remove(m);
         world.deleteMonster(m, m.getX(), m.getY());
     }

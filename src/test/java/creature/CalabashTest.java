@@ -98,7 +98,7 @@ public class CalabashTest {
     @Test
     public void testSkill(){
         calabash.skill();
-        assertEquals(calabash.getAttack(), 40);
+        assertEquals(calabash.getAttack(), 50);
 
         Frog m=new Frog(worldScreen2.getWorld(), worldScreen, 1234);
         assertEquals(m.getHP(), 200);

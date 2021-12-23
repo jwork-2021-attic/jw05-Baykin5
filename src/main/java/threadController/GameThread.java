@@ -44,6 +44,9 @@ public class GameThread extends Thread{
     public void addMonsterThread(Monster m){
         exec.execute(m);
     }
+    public void deleteMonster(Monster m){
+        ;
+    }
 
     public void shutdown(){
         exec.shutdownNow();

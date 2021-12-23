@@ -162,7 +162,7 @@ public abstract class Calabash extends Creature {
         System.out.println("calabash thread running!");
         try {
             while (true) {
-                TimeUnit.MILLISECONDS.sleep(5);
+                TimeUnit.MILLISECONDS.sleep(10);
                 updateGameState();
                 updateShootState(); // 限制射击间隔
                 updateItemState(); // 更新拾取物品状态

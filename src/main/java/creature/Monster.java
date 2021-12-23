@@ -10,8 +10,9 @@ import util.Thing;
 
 public abstract class Monster extends Creature {
 
-    protected static final int refreshFreq = 100;
+    protected static final int refreshFreq = 200;
 
+    //protected int id;
     protected int attack;
     protected int HP;
     protected int maxHP;

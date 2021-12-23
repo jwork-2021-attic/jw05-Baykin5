@@ -28,6 +28,7 @@ public class Frog extends Monster {
         HP = maxHP;
         this.seed=seed;
         r=new Random(seed);
+        //this.id=id;
         int t=r.nextInt(2);
         if (t==0)
             hasHeart=true;
@@ -37,11 +38,12 @@ public class Frog extends Monster {
         try {
             while (HP > 0) {
                 TimeUnit.MILLISECONDS.sleep(refreshFreq);
+                //System.out.println("Frog"+id+" Action");
                 UpdateState();
                 if (HP > 0 && actionCnt==actionFreq) {
                     actionCnt=0;
-                    RandomAttack();
                     RandomMove();
+                    RandomAttack();
                 }
             }
         } catch (InterruptedException e) {
