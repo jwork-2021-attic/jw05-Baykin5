@@ -17,6 +17,9 @@ public abstract class Monster extends Creature {
     protected int HP;
     protected int maxHP;
     protected WorldScreen worldScreen; // 用于获取葫芦娃的位置等等
+    protected long lastTime;
+    protected long nowTime;
+
 
     protected boolean beingHit = false;
 
@@ -25,6 +28,7 @@ public abstract class Monster extends Creature {
     public Monster(char glyph, World world, WorldScreen worldScreen) {
         super(glyph, world);
         this.worldScreen = worldScreen;
+        lastTime = System.currentTimeMillis();
     }
 
     @Override

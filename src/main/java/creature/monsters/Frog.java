@@ -14,7 +14,7 @@ public class Frog extends Monster {
     Random r;
     private static int shootFreq=2;
     private int shootCnt=0;
-    private static int actionFreq=5;
+    private static int actionFreq=1000;
     private int actionCnt=0;
 
     static private int bulletFreq=5;
@@ -40,7 +40,7 @@ public class Frog extends Monster {
                 TimeUnit.MILLISECONDS.sleep(refreshFreq);
                 //System.out.println("Frog"+id+" Action");
                 UpdateState();
-                if (HP > 0 && actionCnt==actionFreq) {
+                if (HP > 0 && actionCnt>=actionFreq) {
                     actionCnt=0;
                     RandomMove();
                     RandomAttack();
@@ -58,7 +58,9 @@ public class Frog extends Monster {
     }
 
     public void UpdateState() {
-        actionCnt++;
+        nowTime = System.currentTimeMillis();
+        actionCnt+=nowTime-lastTime;
+        lastTime=nowTime;
     }
 
     public void RandomMove() {

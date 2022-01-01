@@ -36,7 +36,7 @@ public class Snake extends Monster {
                 TimeUnit.MILLISECONDS.sleep(refreshFreq);
                 //System.out.println("Snake"+id+" Action");
                 UpdateState();
-                if (HP > 0 && actionCnt == actionFreq) {
+                if (HP > 0 && actionCnt >= actionFreq) {
                     actionCnt = 0;
                     RandomMove();
                     RandomAttack();
@@ -48,7 +48,9 @@ public class Snake extends Monster {
     }
 
     public void UpdateState() {
-        actionCnt++;
+        nowTime = System.currentTimeMillis();
+        actionCnt+=nowTime-lastTime;
+        lastTime=nowTime;
         if (HP <= 0) {
             worldScreen.DefeatBoss();
         }
